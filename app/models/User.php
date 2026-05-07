@@ -11,13 +11,28 @@ class UserModel {
     }
 
     // function for bring all the users in users table
-    // (prpare and execute) Prevent anyone from using malicious SQL code on the site(securety)
+    // (prepare and execute) Prevent anyone from using malicious SQL code on the site(securety)
     public function getAllUsers() {
         $query = "SELECT * FROM " . $this->table;
-        $stmt = $this->db->prpare($query);
+        $stmt = $this->db->prepare($query);
         $stmt->execute();
    
     // objecgt to bring the data in database
     return $stmt->fetchAll();
+    }
+
+    public function createUser($email, $password, $role = 'user') {
+        $query = "INSERT INTO " . $this->table . " (email, password, role) VALUES (:email, :password, :role)";
+    
+    $stmt = $this->db->prepare($query);
+
+    $stmt->bindParam(':email', $email);
+    $stmt->bindParam(':password', $password);
+    $stmt->bindParam(':role', $role);
+
+    if($stmt->execute()) {
+        return true;
+    }
+    return false;
     }
 }
