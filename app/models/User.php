@@ -11,7 +11,7 @@ class UserModel {
     }
 
     // function for bring all the users in users table
-
+    // (prpare and execute) Prevent anyone from using malicious SQL code on the site(securety)
     public function getAllUsers() {
         $query = "SELECT * FROM " . $this->table;
         $stmt = $this->db->prpare($query);
