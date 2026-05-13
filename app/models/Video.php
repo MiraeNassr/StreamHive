@@ -22,4 +22,20 @@ class VideoModel {
         
         return $stmt->fetchAll();
     }
+
+    public function createVideo($title, $description, $filename, $user_id) {
+        $query = "INSERT INTO " . $this->table . " (user_id, title, description, filename) VALUES (:user_id, :title, :description, :filename)";
+
+        $stmt = $this->db->prepare($query);
+
+        $stmt->bindParam(':user_id', $user_id);
+        $stmt->bindParam(':title', $title);
+        $stmt->bindParam(':description', $description);
+        $stmt->bindParam(':filename', $filename);
+
+        if($stmt->execute()) {
+            return true;
+        }
+        return false;
+    }
 }
