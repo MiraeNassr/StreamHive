@@ -22,12 +22,14 @@ class UserModel {
     }
 
     public function createUser($email, $password, $role = 'user') {
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
         $query = "INSERT INTO " . $this->table . " (email, password, role) VALUES (:email, :password, :role)";
+        
     
     $stmt = $this->db->prepare($query);
 
     $stmt->bindParam(':email', $email);
-    $stmt->bindParam(':password', $password);
+    $stmt->bindParam(':password', $hashedPassword);
     $stmt->bindParam(':role', $role);
 
     if($stmt->execute()) {
