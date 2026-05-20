@@ -31,13 +31,32 @@ class UserController {
             $user = $this->userModel->login($email, $password);
 
             if ($user){
-                echo "Inloggen succesvol! Welkom" . $user['email'];
+                // save the user data
+               
+                $_SESSION['user_id'] = $user['id'];
+                $_SESSION['user_email'] = $user['email'];
+                $_SESSION['user_role'] = $user['role'];
+                header("Location: index.php");
+                exit();
             }else{
                 echo "Onjuiste email of wachtwoord.";
             }
         }else{
-            require_once 'app/views/login.php';
+            require_once './views/login.php';
         }
+       }
+
+       public function logout(){
+            if (session_status() === PHP_SESSION_NONE){
+                session_start();
+            }
+            // delete all data
+            $_SESSION = array();
+            session_destroy();
+
+            //send the user to the home page
+            header("location: index.php");
+            exit();
        }
     }
  
