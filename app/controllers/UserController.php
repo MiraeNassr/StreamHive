@@ -22,5 +22,22 @@ class UserController {
 
     }
         }
+
+       public function login() {
+        if($_SERVER['REQUEST_METHOD']== 'POST'){
+            $email =$_POST['email'];
+            $password= $_POST['password'];
+
+            $user = $this->userModel->login($email, $password);
+
+            if ($user){
+                echo "Inloggen succesvol! Welkom" . $user['email'];
+            }else{
+                echo "Onjuiste email of wachtwoord.";
+            }
+        }else{
+            require_once 'app/views/login.php';
+        }
+       }
     }
  
