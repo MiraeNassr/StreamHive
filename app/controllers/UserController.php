@@ -18,7 +18,7 @@ class UserController {
             echo "Error in register";
         }
     }else{
-        require_once 'app/views/register.php';
+        require_once './views/register.php';
 
     }
         }
