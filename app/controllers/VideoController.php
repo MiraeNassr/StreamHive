@@ -50,6 +50,35 @@ class VideoController {
         $videos = $this->videoModel->getAllVideos();
         return $videos;
     }
+
+    public function delete(){
+        if(session_start() === PHP_SESSION_NONE){
+            session_start();
+        }
+        //if the user loged in 
+        if(!isset($_SESSION['user_id'])){
+            header("Location: index.php?action=login");
+            exit();
+        }
+
+        // if the id number correct
+        if(isset($_GET['id'])){
+            $video_id = $_GET['id'];
+            $user_id =  $_GET['user_id'];
+
+         if($this->videoModel->deletVideo($video_id, $user_id)){
+          header("Location: index.php?");
+          exit();
+         } else {
+            echo "Fout bij het verwijderen van de video.";
+        }
+    } else {
+        header("Location: index.php");
+        exit();
+    }
 }
+
+    }
+
                 
             

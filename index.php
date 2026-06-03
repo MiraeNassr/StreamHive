@@ -35,6 +35,11 @@ switch ($action) {
     case 'upload':
         $videoController->upload();
         break;
+    
+    case 'delete_video': 
+        $videoController->delete();
+        break;
+
     case 'home':
         default: 
         echo"<h1>Welkom bij StreamHive </h1>";
@@ -59,29 +64,29 @@ switch ($action) {
                 echo "<p>" . htmlspecialchars($video['description']) . "</p>";
 
               echo "<video width='300' controls>";
-
                 echo "<source src='" . htmlspecialchars($video['filename']) . "' type='video/mp4'>";
-
                 echo "Je browser ondersteunt deze video niet.";
-
                 echo "</video>";
 
-                
+                if (isset($_SESSION['user_id']) && $_SESSION['user_id'] == $video['user_id']) {
 
+                    echo "<br><br>";
+
+                    echo "<a href='index.php?action=delete_video&id=" . $video['id'] . "'style='color: red; font-weight: bold;' 
+
+                             onclick='return confirm(\"Weet je zeker dat je deze video wilt verwijderen?\")'>Video Verwijderen </a>";
+                }
                 echo "</div>";
 
             }
-
             echo "</div>";
-
         } else {
-
             echo "<p>Er zijn nog geen video's geüpload. </p>";
-
         }
 
         break;
     
+        
 }
 
         
