@@ -84,6 +84,10 @@ public function watch() {
 
         $video = $this->videoModel->getVideoById($video_id);
         $related_videos = $this->videoModel->getRelatedVideos($video_id);
+        
+        //Call the comment model in index file
+        global $commentModel; 
+        $comments = $commentModel->getCommentsByVideoId($video_id);
 
         if ($video) {
             require_once './views/watch_video.php';
