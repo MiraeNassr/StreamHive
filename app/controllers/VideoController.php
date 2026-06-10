@@ -52,7 +52,7 @@ class VideoController {
     }
 
     public function delete(){
-        if(session_start() === PHP_SESSION_NONE){
+        if(session_status() === PHP_SESSION_NONE){
             session_start();
         }
         //if the user loged in 
@@ -64,13 +64,31 @@ class VideoController {
         // if the id number correct
         if(isset($_GET['id'])){
             $video_id = $_GET['id'];
-            $user_id =  $_GET['user_id'];
+            $user_id =  $_SESSION['user_id'];
 
-         if($this->videoModel->deletVideo($video_id, $user_id)){
+         if ($this->videoModel->deleteVideo($video_id, $user_id)) {
           header("Location: index.php?");
           exit();
          } else {
             echo "Fout bij het verwijderen van de video.";
+        }
+    } else {
+        header("Location: index.php");
+        exit();
+    }
+}
+
+public function watch() {
+    if (isset($_GET['id'])) {
+        $video_id = $_GET['id'];
+
+        $video = $this->videoModel->getVideoById($video_id);
+        $related_videos = $this->videoModel->getRelatedVideos($video_id);
+
+        if ($video) {
+            require_once './views/watch_video.php';
+        } else {
+            echo "Video niet gevonden.";
         }
     } else {
         header("Location: index.php");
