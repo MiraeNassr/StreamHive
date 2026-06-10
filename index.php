@@ -5,6 +5,9 @@ require_once 'app/models/User.php';
 require_once 'app/models/Video.php';
 require_once 'app/controllers/UserController.php';
 require_once 'app/controllers/VideoController.php';
+require_once 'app/models/Comment.php';
+require_once 'app/controllers/CommentController.php';
+
 $database = new database();
 $db_conn = $database->getConnection();
 
@@ -15,6 +18,9 @@ $userController = new UserController($userModel);
 
 $videoModel = new VideoModel($db_conn);
 $videoController = new VideoController($videoModel);
+
+$commentModel = new CommentModel($db_conn);
+$commentController = new CommentController($commentModel);
 
 $action = isset($_GET['action']) ? $_GET['action'] : 'home';
 
@@ -42,6 +48,10 @@ switch ($action) {
 
     case 'watch':
         $videoController->watch();
+        break;
+
+    case 'add_comment':
+        $commentController->store();
         break;
 
     case 'home':
