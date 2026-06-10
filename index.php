@@ -7,6 +7,8 @@ require_once 'app/controllers/UserController.php';
 require_once 'app/controllers/VideoController.php';
 require_once 'app/models/Comment.php';
 require_once 'app/controllers/CommentController.php';
+require_once 'app/models/Like.php';
+require_once 'app/controllers/LikeController.php';
 
 $database = new database();
 $db_conn = $database->getConnection();
@@ -21,6 +23,9 @@ $videoController = new VideoController($videoModel);
 
 $commentModel = new CommentModel($db_conn);
 $commentController = new CommentController($commentModel);
+
+$likeModel = new LikeModel($db_conn);
+$likeController = new LikeController($likeModel);
 
 $action = isset($_GET['action']) ? $_GET['action'] : 'home';
 
@@ -52,6 +57,10 @@ switch ($action) {
 
     case 'add_comment':
         $commentController->store();
+        break;
+
+    case 'like_video':
+        $likeController->toggleLike();
         break;
 
     case 'home':
