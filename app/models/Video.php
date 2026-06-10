@@ -32,13 +32,31 @@ class VideoModel {
         return $stmt->execute();
    }
 
-   public function deletVideo($video_id, $user_id){
-    $query = "DELETE FROM" . $this->table . "WHERE id - :video_id AND user_id = :user_id";
+   public function getVideoById($id) {
+    $query = "SELECT * FROM videos WHERE id = :id";
     $stmt = $this->db->prepare($query);
+    $stmt->bindParam(':id', $id);
+    $stmt->execute();
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
 
+public function getRelatedVideos($current_id) {
+    $query = "SELECT * FROM videos WHERE id != :current_id ORDER BY id DESC LIMIT 4";
+    $stmt = $this->db->prepare($query);
+    $stmt->bindParam(':current_id', $current_id);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+   public function deleteVideo($video_id, $user_id) {
+   $query = "DELETE FROM videos WHERE id = :video_id AND user_id = :user_id";
+    
+    $stmt = $this->db->prepare($query);
+    
     $stmt->bindParam(':video_id', $video_id);
     $stmt->bindParam(':user_id', $user_id);
-
+    
     return $stmt->execute();
+
    }
 }
