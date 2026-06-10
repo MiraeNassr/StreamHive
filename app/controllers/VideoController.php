@@ -88,6 +88,14 @@ public function watch() {
         //Call the comment model in index file
         global $commentModel; 
         $comments = $commentModel->getCommentsByVideoId($video_id);
+      //Call the like model in index file
+        global $likeModel; 
+        $like_count = $likeModel->getLikeCount($video_id);
+
+        $has_liked = false;
+        if (isset($_SESSION['user_id'])) {
+            $has_liked = $likeModel->hasUserLiked($video_id, $_SESSION['user_id']);
+        }
 
         if ($video) {
             require_once './views/watch_video.php';
