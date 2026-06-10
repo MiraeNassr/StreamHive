@@ -9,7 +9,7 @@ class CommentModel {
     }
 //function to save the comments in database
     public function addComment($video_id, $user_id, $comment_text) {
-        $query = "INSERT INTO " . $this->table . " (video_id, user_id, comment_text) 
+        $query = "INSERT INTO " . $this->table . " (video_id, user_id, content) 
                   VALUES (:video_id, :user_id, :comment_text)";
         
         $stmt = $this->db->prepare($query);
@@ -23,7 +23,8 @@ class CommentModel {
     // function to cupel the user with his comment
 
     public function getCommentsByVideoId($video_id) {
-        $query = "SELECT c.*, u.email FROM " . $this->table . " c 
+        $query = "SELECT c.id, c.video_id, c.user_id, c.content, c.created_at, u.email 
+                  FROM " . $this->table . " c 
                   JOIN users u ON c.user_id = u.id 
                   WHERE c.video_id = :video_id 
                   ORDER BY c.created_at DESC";
