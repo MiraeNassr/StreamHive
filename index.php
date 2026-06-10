@@ -40,6 +40,10 @@ switch ($action) {
         $videoController->delete();
         break;
 
+    case 'watch':
+        $videoController->watch();
+        break;
+
     case 'home':
         default: 
         echo"<h1>Welkom bij StreamHive </h1>";
@@ -57,29 +61,36 @@ switch ($action) {
         // bring videos from the contener
         $videos = $videoController->index();
 
-        if (!empty($videos)){
-            echo "<div style='border: 1px solid #ccc; padding: 15px; width: 320px; border-radius: 8px;'>";
-            foreach($videos as $video){
+     if (!empty($videos)) {
+            echo "<div style='display: flex; flex-wrap: wrap; gap: 20px;'>";
+            foreach ($videos as $video) {
+                echo "<div style='border: 1px solid #ccc; padding: 15px; width: 320px; border-radius: 8px;'>";
                 echo "<h3>" . htmlspecialchars($video['title']) . "</h3>";
                 echo "<p>" . htmlspecialchars($video['description']) . "</p>";
 
-              echo "<video width='300' controls>";
+          echo "<a href='index.php?action=watch&id=" . $video['id'] . "' style='text-decoration: none; color: inherit;'>";
+                echo "<video width='300' muted loop 
+                             onmouseover='this.play()' 
+                             onmouseout='this.pause(); this.currentTime = 0;' 
+                             style='cursor: pointer; border-radius: 4px;'>";
                 echo "<source src='" . htmlspecialchars($video['filename']) . "' type='video/mp4'>";
                 echo "Je browser ondersteunt deze video niet.";
                 echo "</video>";
-
+                echo "</a>";
+                
                 if (isset($_SESSION['user_id']) && $_SESSION['user_id'] == $video['user_id']) {
-
                     echo "<br><br>";
-
-                    echo "<a href='index.php?action=delete_video&id=" . $video['id'] . "'style='color: red; font-weight: bold;' 
-
-                             onclick='return confirm(\"Weet je zeker dat je deze video wilt verwijderen?\")'>Video Verwijderen </a>";
+                    echo "<a href='index.php?action=delete_video&id=" . $video['id'] . "' 
+                             style='color: red; font-weight: bold;' 
+                             onclick='return confirm(\"Weet je zeker dat je deze video wilt verwijderen?\")'>
+                             Video Verwijderen
+                          </a>";
                 }
+                
                 echo "</div>";
-
             }
             echo "</div>";
+        
         } else {
             echo "<p>Er zijn nog geen video's geüpload. </p>";
         }
