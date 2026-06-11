@@ -20,7 +20,11 @@ class LikeController {
             $user_id = $_SESSION['user_id'];
 
             //Prevent duplication in Model like
+           if ($this->likeModel->hasUserLiked($video_id, $user_id)) {
+            $this->likeModel->removeLike($video_id, $user_id);
+        } else {
             $this->likeModel->addLike($video_id, $user_id);
+        }
             header("Location: index.php?action=watch&id=" . $video_id);
             exit();
         }
