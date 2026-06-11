@@ -141,6 +141,14 @@
         <div class="video-info">
             <h2><?php echo htmlspecialchars($video['title']); ?></h2>
             <p><?php echo htmlspecialchars($video['description']); ?></p>
+
+            <div style="margin-top: 15px;">
+                <a href="index.php?action=like_video&video_id=<?php echo $video['id']; ?>" style="text-decoration: none; inline-block; padding: 8px 16px; border-radius: 20px; font-weight: bold;
+                      background-color: <?php echo $has_liked ? '#007bff' : '#eee'; ?>; 
+                      color: <?php echo $has_liked ? '#fff' : '#333'; ?>;">
+                    👍 <?php echo $has_liked ? 'Geliked' : 'Like'; ?> (<?php echo $like_count; ?>)
+                </a>
+            </div>
         </div>
         <div class="comments-section">
             <h3>Reacties</h3>
